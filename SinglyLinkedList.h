@@ -47,6 +47,47 @@ public:
         return is;
     }
 
+    class Iterator {
+    private:
+       Node* current;
+    public:
+       explicit Iterator(Node* node) : current(node) {}
+
+       T& operator*() { return current->data; }
+
+       Iterator& operator++() {
+           current = current->next;
+           return *this;
+       }
+
+       bool operator!=(const Iterator& other) const {
+           return current != other.current;
+       }
+   };
+
+   class ConstIterator {
+    private:
+       const Node* current;
+   public:
+       explicit ConstIterator(const Node* node) : current(node) {}
+
+       const T& operator*() const { return current->data; }
+
+       ConstIterator& operator++() {
+           current = current->next;
+           return *this;
+       }
+       bool operator!=(const ConstIterator& other) const {
+           return current != other.current;
+       }
+   };
+
+    virtual Iterator begin() { return Iterator(head); }
+    virtual Iterator end() { return Iterator(nullptr); }
+
+    virtual ConstIterator cbegin() const { return ConstIterator(head); }
+    virtual ConstIterator cend() const { return ConstIterator(nullptr); }
+
 private:
     void Clear();
     void CopyFrom(const LinkedList& other);
@@ -153,6 +194,18 @@ public:
     bool IsEmpty() const override;
     size_t Size() const override;
     void Print() const override;
+
+     typename LinkedList<T>::Iterator begin() override {
+        return LinkedList<T>::begin();}
+
+    typename LinkedList<T>::Iterator end() override {
+        return LinkedList<T>::end();}
+
+    typename LinkedList<T>::ConstIterator cbegin() const override {
+        return LinkedList<T>::cbegin();}
+
+    typename LinkedList<T>::ConstIterator cend() const override {
+        return LinkedList<T>::cend();}
 
 private:
     using LinkedList<T>::head;
@@ -271,6 +324,22 @@ public:
     size_t Size() const override;
     void Print() const override;
 
+    typename LinkedList<T>::Iterator begin() override {
+        return LinkedList<T>::begin();
+    }
+
+    typename LinkedList<T>::Iterator end() override {
+        return LinkedList<T>::end();
+    }
+
+    typename LinkedList<T>::ConstIterator cbegin() const override {
+        return LinkedList<T>::cbegin();
+    }
+
+    typename LinkedList<T>::ConstIterator cend() const override {
+        return LinkedList<T>::cend();
+    }
+
 private:
 
     typename LinkedList<T>::Node* tail;
@@ -279,6 +348,8 @@ private:
 
     void CopyFrom(const Queue<T>& other);
     void Clear();
+
+
 };
 
 template <typename T>
