@@ -47,6 +47,9 @@ public:
         return is;
     }
 
+    class ConstIterator;
+    class Iterator;
+
     class Iterator {
     private:
        Node* current;
@@ -60,7 +63,23 @@ public:
            return *this;
        }
 
-       bool operator!=(const Iterator& other) const {
+       Iterator operator ++(int) {
+           Iterator i = *this;
+           ++(*this);
+           return i;
+           }
+
+       bool operator == (const Iterator& other) const {
+           return current == other.current;
+       }
+       bool operator != (const Iterator& other) const {
+           return current != other.current;
+       }
+
+       bool operator == (const ConstIterator& other) const {
+           return current == other.current;
+       }
+       bool operator != (const ConstIterator& other) const {
            return current != other.current;
        }
    };
@@ -77,9 +96,18 @@ public:
            current = current->next;
            return *this;
        }
-       bool operator!=(const ConstIterator& other) const {
-           return current != other.current;
-       }
+
+       ConstIterator operator++(int) {
+           ConstIterator t = *this;
+           ++(*this);
+           return t;
+        }
+
+       bool operator == (const ConstIterator& other) const {return current == other.current;}
+       bool operator != (const ConstIterator& other) const {return current != other.current;}
+
+       bool operator == (const Iterator& other) const {return current == other.current;}
+       bool operator != (const Iterator& other) const {return current != other.current;}
    };
 
     virtual Iterator begin() { return Iterator(head); }
